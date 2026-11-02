@@ -26,7 +26,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 USER 1000:1000
 EXPOSE 8000
 
+# unhealthy aj keď vault nie je pripojený ("vault": false), nie len keď server nebeží
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD curl -fsS http://127.0.0.1:8000/healthz || exit 1
+  CMD curl -fsS http://127.0.0.1:8000/healthz | grep -q '"vault": true' || exit 1
 
 CMD ["/app/entrypoint.sh"]
