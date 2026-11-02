@@ -49,6 +49,7 @@ environment variables (never Build Variables).
 
 ```bash
 uv sync --extra dev
-VAULT_DIR=/path/to/vault MCP_TOKEN=dev uv run uvicorn vault_mcp.server:app --port 8000
+VAULT_DIR=/path/to/vault MCP_TOKEN=dev PUBLIC_HOST=localhost:8000 \
+  uv run uvicorn vault_mcp.server:app --port 8000 --no-access-log
 uv run pytest -q
 ```

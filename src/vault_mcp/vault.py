@@ -193,6 +193,7 @@ class Vault:
                 budget.exhausted = True
             return None
         except OSError:
+            budget.exhausted = True  # unreadable note: the result is not complete
             return None
         if truncated:
             budget.exhausted = True

@@ -254,3 +254,15 @@ def test_r2_2_link_caps_are_reported(vault: Vault, monkeypatch):
     (_root(vault) / "Hub.md").write_text("[[A]] [[B]] [[C]] [[D]]\n", encoding="utf-8")
     out = vault.read("Hub")
     assert len(out["links"]) == 2 and out["links_truncated"] == 4
+
+
+def test_unreadable_note_marks_results_incomplete(vault: Vault):
+    if os.geteuid() == 0:
+        pytest.skip("root ignores file permissions")
+    denied = _root(vault) / "Infraštruktúra" / "Obsidian Sync.md"
+    denied.chmod(0)
+    try:
+        assert vault.search("kocke").get("incomplete") is True
+        assert vault.read("Zdroje MCP").get("backlinks_incomplete") is True
+    finally:
+        denied.chmod(0o644)
