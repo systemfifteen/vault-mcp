@@ -41,9 +41,11 @@ Client URL: `https://vault.system15.win/mcp/<MCP_TOKEN>` (claude.ai custom conne
 
 ## Deploy (Coolify on kocka)
 
-Dockerfile app, port 8000, domain `https://vault.system15.win`. Vault mount (read-only) via custom Docker
-run options: `-v /home/fifteen/obsidian-sync/vaults/peter/Fifteen:/vault:ro`. Secrets as runtime-only
-environment variables (never Build Variables).
+Coolify build pack **Docker Compose** (`docker-compose.yml`), domain `https://vault.system15.win` on service
+`vault-mcp`, port 8000. The compose file bind-mounts the vault **read-only** (`:ro`), runs with a read-only
+root filesystem, `cap_drop: ALL` and `no-new-privileges`. `MCP_TOKEN` is a runtime-only Coolify variable
+managed by `secret-rotation` (id `vault-mcp`); Traefik access logging is disabled on the app's routers so the
+token-in-path URL is never logged.
 
 ## Run locally
 

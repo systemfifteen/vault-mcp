@@ -1,0 +1,22 @@
+# Coolify (build pack: Docker Compose). The vault is mounted READ-ONLY; secrets come from Coolify runtime env.
+services:
+  vault-mcp:
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - /home/fifteen/obsidian-sync/vaults/peter/Fifteen:/vault:ro
+    environment:
+      - MCP_TOKEN=${MCP_TOKEN:-}
+      - VAULT_DIR=/vault
+      - VAULT_EXCLUDE=${VAULT_EXCLUDE:-Medrio}
+      - PUBLIC_HOST=${PUBLIC_HOST:-vault.system15.win}
+      - TZ=Europe/Bratislava
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
